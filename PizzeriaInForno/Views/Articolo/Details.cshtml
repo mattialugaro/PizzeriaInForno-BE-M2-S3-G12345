@@ -1,0 +1,60 @@
+﻿@model PizzeriaInForno.Models.Articolo
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Articolo</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Nome)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Nome)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Foto)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Foto)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Prezzo)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Prezzo)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TempoConsegna)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TempoConsegna)
+        </dd>
+
+    </dl>
+
+    <div class="col-md-10">
+        <select id="ingredientiMultiSelect" name="IngredientiSelezionati" multiple="multiple">
+            @foreach (var ingrediente in Model.Ingredient)
+            {
+                <option value="@ingrediente.IDIngredient">@ingrediente.Nome</option>
+            }
+        </select>
+        @Html.ValidationMessageFor(model => Model.IngredientiSelezionati, "", new { @class = "text-danger" })
+    </div>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.IDArticolo }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

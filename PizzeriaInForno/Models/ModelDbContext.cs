@@ -1,34 +1,45 @@
-﻿using System;
+using System;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
 using System.Linq;
-using System.Xml;
 
 namespace PizzeriaInForno.Models
 {
-    public class ModelDbContext : DbContext
+    public partial class ModelDbContext : DbContext
     {
-        // Il contesto è stato configurato per utilizzare una stringa di connessione 'ModelDbContext' dal file di configurazione 
-        // dell'applicazione (App.config o Web.config). Per impostazione predefinita, la stringa di connessione è destinata al 
-        // database 'PizzeriaInForno.Models.ModelDbContext' nell'istanza di LocalDb. 
-        // 
-        // Per destinarla a un database o un provider di database differente, modificare la stringa di connessione 'ModelDbContext' 
-        // nel file di configurazione dell'applicazione.
         public ModelDbContext()
             : base("name=ModelDbContext")
         {
         }
 
-        // Aggiungere DbSet per ogni tipo di entità che si desidera includere nel modello. Per ulteriori informazioni 
-        // sulla configurazione e sull'utilizzo di un modello Code, vedere http://go.microsoft.com/fwlink/?LinkId=390109.
-        
         public virtual DbSet<Articolo> Articolo { get; set; }
+        public virtual DbSet<Ingredient> Ingredient { get; set; }
+        public virtual DbSet<ArticoloIngredient> ArticoloIngredient { get; set; }
         public virtual DbSet<Ordine> Ordine { get; set; }
         public virtual DbSet<Utente> Utente { get; set; }
-    }
+        public virtual DbSet<OrdineArticolo> OrdineArticolo { get; set; }
 
-    //public class MyEntity
-    //{
-    //    public int Id { get; set; }
-    //    public string Name { get; set; }
-    //}
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            /*modelBuilder.Entity<Articolo>()
+                .HasMany(e => e.OrdineArticolo)
+                .WithRequired(e => e.Articolo)
+                .WillCascadeOnDelete(false);*/
+
+            /*modelBuilder.Entity<Articolo>()
+                .HasMany(e => e.Ingrediente)
+                .WithMany(e => e.Articolo)
+                .Map(m => m.ToTable("ArticoloIngrediente").MapLeftKey("IDArticolo").MapRightKey("IDIngrediente"));*/
+
+           /* modelBuilder.Entity<Ordine>()
+                .HasMany(e => e.OrdineArticolo)
+                .WithRequired(e => e.Ordine)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Utente>()
+                .HasMany(e => e.Ordine)
+                .WithRequired(e => e.Utente)
+                .WillCascadeOnDelete(false);*/
+        }
+    }
 }

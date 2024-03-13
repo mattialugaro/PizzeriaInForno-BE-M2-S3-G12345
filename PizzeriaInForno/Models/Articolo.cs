@@ -1,37 +1,51 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
-
 namespace PizzeriaInForno.Models
 {
-    public class Articolo
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations.Schema;
+    using System.Data.Entity.Spatial;
+    using System.Linq;
+
+    [Table("Articolo")]
+    public partial class Articolo
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Articolo()
+        {
+            OrdineArticolo = new HashSet<OrdineArticolo>();            
+        }
+
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        [ScaffoldColumn(false)]
         public int IDArticolo { get; set; }
 
-        [Required(ErrorMessage = "Il Nome è un campo obbligatorio")]
-        [StringLength(50, MinimumLength = 2, ErrorMessage = "Il Nome non può avere più di 50 caratteri")]
+        [Required]
+        [StringLength(50)]
         public string Nome { get; set; }
 
-        [Required(ErrorMessage = "La Foto è un campo obbligatorio")]
-        [StringLength(50, MinimumLength = 2, ErrorMessage = "La Foto non può avere più di 50 caratteri")]
+        [Required]
+        [StringLength(50)]
         public string Foto { get; set; }
 
-        [Required(ErrorMessage = "Il Prezzo è un campo obbligatorio")]
-        [Range(1, int.MaxValue, ErrorMessage = "Il Prezzo deve essere maggiore di 0")]
         public decimal Prezzo { get; set; }
 
-        [Required(ErrorMessage = "Il Tempo di Consegna è un campo obbligatorio")]
-        [Display(Name = "Tempo di Consegna")]
-        [Range(1, int.MaxValue, ErrorMessage = "Il Tempo di Consegna deve essere maggiore di 0")]
-        public int TempoConsegna {  get; set; }
+        public int TempoConsegna { get; set; }
 
-        public List<Ingrediente> Ingredienti { get; set; }
+       
+        public virtual ICollection<OrdineArticolo> OrdineArticolo { get; set; }
 
+        [NotMapped]
+        public virtual List<Ingredient> Ingredient { get; set; } = new List<Ingredient>();
+
+        [NotMapped]
+        public List<Ingredient> IngredientiTendina = new List<Ingredient>();
+
+        [NotMapped]
+        public List<int> IngredientiSelezionati { get; set; } = new List<int>();
+
+        public bool isIngredienteSelezionato(int idIngrediente)
+        {
+            return Ingredient.Where(i => i.IDIngredient == idIngrediente).FirstOrDefault() != null;
+        }
     }
 }

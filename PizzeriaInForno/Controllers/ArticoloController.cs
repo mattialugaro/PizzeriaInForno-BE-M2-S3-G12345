@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -16,8 +17,8 @@ namespace PizzeriaInForno.Controllers
 
         // GET: Articolo
         public ActionResult Index()
-        {                        
-            return View(db.Articolo.ToList());
+        {                                    
+            return View(getArticoliConIngredienti());
         }
 
         // GET: Articolo/Details/5
@@ -52,6 +53,28 @@ namespace PizzeriaInForno.Controllers
             return View(articolo);
         }
 
+//var fileName = Path.GetFileName(ImmagineCopertina.FileName);
+//var path = Path.Combine("~/Content/Img", fileName);
+//var absolutePath = Server.MapPath(path);
+//ImmagineCopertina.SaveAs(absolutePath);
+
+//HttpPostedFileBase ImmagineCopertina come parametro
+
+//if (Foto != null && Foto.ContentLength > 0)
+//{
+//    string nomeFile = Path.GetFileName(Foto.FileName);
+//string pathToSave = Path.Combine(Server.MapPath("~/ImmaginiProdotto"), nomeFile);
+//Foto.SaveAs(pathToSave);
+//prodotto.Foto = "/ImmaginiProdotto/" + nomeFile; // Imposta l'URL dell'immagine
+//}
+//if (ModelState.IsValid)
+//{
+//    db.Prodotto.Add(prodotto);
+//    db.SaveChanges();
+//    return RedirectToAction("Index");
+//}
+//return View(prodotto);
+
 
         // POST: Articolo/Create
         // Per la protezione da attacchi di overposting, abilitare le proprietà a cui eseguire il binding. 
@@ -62,6 +85,18 @@ namespace PizzeriaInForno.Controllers
         {
             if (ModelState.IsValid)
             {
+                // salvataggio foto
+                var foto = Request.Files[0];
+                if (foto != null && foto.ContentLength > 0)
+                {
+                    var fileName = Path.GetFileName(foto.FileName);
+                    var path = Path.Combine("~/Content/img", fileName);
+                    var absolutePath = Server.MapPath(path);
+                    foto.SaveAs(absolutePath);
+
+                    articolo.Foto = fileName;
+                }                
+
                 // creao articolo
                 db.Articolo.Add(articolo);
                 db.SaveChanges();
@@ -118,6 +153,29 @@ namespace PizzeriaInForno.Controllers
         {
             if (ModelState.IsValid)
             {
+                // salvataggio foto
+                var foto = Request.Files[0];
+                if (foto != null && foto.ContentLength > 0)
+                {
+                    // elimino possibile foto vecchia
+                    var articoloSalvato = db.Articolo.Where(a => a.IDArticolo == articolo.IDArticolo).First();
+                    if (!string.IsNullOrEmpty(articoloSalvato.Foto))
+                    {
+                        var pathToDelete = Path.Combine("~/Content/img", articoloSalvato.Foto);
+                        var absolutePathToDelete = Server.MapPath(pathToDelete);
+                        System.IO.File.Delete(absolutePathToDelete);
+                    }
+                    db.Entry(articoloSalvato).State = EntityState.Detached;
+
+                    // foto nuova
+                    var fileName = Path.GetFileName(foto.FileName);
+                    var path = Path.Combine("~/Content/img", fileName);
+                    var absolutePath = Server.MapPath(path);
+                    foto.SaveAs(absolutePath);
+
+                    articolo.Foto = fileName;
+                }
+
                 // aggiornamento articolo
                 db.Entry(articolo).State = EntityState.Modified;
                 db.SaveChanges();
@@ -136,8 +194,7 @@ namespace PizzeriaInForno.Controllers
                     ingredientiDaCreare.Add(creare);
                 }
                 db.ArticoloIngredient.AddRange(ingredientiDaCreare);
-                db.SaveChanges();
-
+                db.SaveChanges();             
 
                 return RedirectToAction("Index");
             }
@@ -156,6 +213,14 @@ namespace PizzeriaInForno.Controllers
             {
                 return HttpNotFound();
             }
+
+            var articoloIngredienti = db.ArticoloIngredient.Where(a => a.IDArticolo == articolo.IDArticolo).ToList();
+            articoloIngredienti.ForEach(ai =>
+            {
+                var dettagliIngrediente = db.Ingredient.Where(i => i.IDIngredient == ai.IDIngrediente).First();
+                articolo.Ingredient.Add(dettagliIngrediente);
+            });
+
             return View(articolo);
         }
 
@@ -188,8 +253,23 @@ namespace PizzeriaInForno.Controllers
         }
 
         public ActionResult Menu()
+        {            
+            return View(getArticoliConIngredienti());
+        }
+
+        private IList<Articolo> getArticoliConIngredienti()
         {
-            return View(db.Articolo.ToList());
+            var articoli = db.Articolo.ToList();
+            foreach (var articolo in articoli)
+            {
+                var articoloIngredienti = db.ArticoloIngredient.Where(a => a.IDArticolo == articolo.IDArticolo).ToList();
+                articoloIngredienti.ForEach(ai =>
+                {
+                    var dettagliIngrediente = db.Ingredient.Where(i => i.IDIngredient == ai.IDIngrediente).First();
+                    articolo.Ingredient.Add(dettagliIngrediente);
+                });
+            }
+            return articoli;
         }
     }
 }

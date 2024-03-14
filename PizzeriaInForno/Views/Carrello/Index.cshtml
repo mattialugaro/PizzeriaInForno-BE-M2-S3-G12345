@@ -1,0 +1,36 @@
+﻿@model IEnumerable<PizzeriaInForno.Models.OrdineArticolo>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<div class="container">
+    <div class="row">
+        @foreach (var articolo in Model)
+        {
+            <div class="col-3">
+                <div class="card">
+                    <img src="~/Content/img/@articolo.Articolo.Foto" class="card-img-top" height="296px" alt="@articolo.Articolo.Nome">
+                    <div class="card-body">
+                        <h5 class="card-title">@articolo.Articolo.Nome</h5>
+                        <p class="card-text">
+                            @foreach (var ingrediente in articolo.Articolo.Ingredient)
+                            {
+                                <span>@Html.Raw(@ingrediente.Nome)</span>
+                            }
+                        </p>
+                        <div class="d-flex justify-content-between">
+                            <p class="card-text">@articolo.Articolo.TempoConsegna Min.</p>
+                            <p class="card-text">@articolo.Articolo.Prezzo €</p>
+                        </div>
+                        <p>@articolo.Quantita</p>
+                        @Html.ActionLink("Rimuovi al Carrello", "Delete", "Carrello", new { id = articolo.IDArticolo }, null)
+                    </div>
+                </div>
+            </div>
+
+        }
+    </div>
+</div>

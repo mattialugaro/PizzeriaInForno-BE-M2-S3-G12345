@@ -15,12 +15,17 @@
                     <img src="~/Content/img/@articolo.Foto" class="card-img-top" height="296px" alt="@articolo.Nome">
                     <div class="card-body">
                         <h5 class="card-title">@articolo.Nome</h5>
-                        <p class="card-text">@articolo.Ingredient</p>
+                        <p class="card-text">
+                            @foreach (var ingrediente in articolo.Ingredient)
+                            {
+                                <span>@Html.Raw(@ingrediente.Nome)</span>
+                            }
+                        </p>
                         <div class="d-flex justify-content-between">
                             <p class="card-text">@articolo.TempoConsegna Min.</p>
                             <p class="card-text">@articolo.Prezzo €</p>
                         </div>
-                        <a href="#" class="btn btn-primary">Aggiungi al carrello</a>
+                        @Html.ActionLink("Aggiungi al Carrello", "AggiungiArticolo", "Carrello", new { id = articolo.IDArticolo}, null)
                     </div>
                 </div>
             </div>

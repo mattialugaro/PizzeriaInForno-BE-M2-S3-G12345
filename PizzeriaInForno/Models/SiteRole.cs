@@ -42,7 +42,7 @@ namespace PizzeriaInForno.Models
             string connectionString = ConfigurationManager.ConnectionStrings["MyDB"].ConnectionString.ToString();
             SqlConnection conn = new SqlConnection(connectionString);
 
-            SqlCommand cmd = new SqlCommand("SELECT Role FROM Utente WHERE Email=@Email", conn);
+            SqlCommand cmd = new SqlCommand("SELECT Ruolo FROM Utente WHERE Email=@Email", conn);
             cmd.Parameters.AddWithValue("Email", email);
 
             conn.Open();
@@ -53,7 +53,7 @@ namespace PizzeriaInForno.Models
 
             while (reader.Read())
             {
-                string ruolo = reader["Role"].ToString();
+                string ruolo = reader["Ruolo"].ToString();
                 roles.Add(ruolo); //aggiungo alla lista
             }
             conn.Close();

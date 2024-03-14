@@ -216,10 +216,10 @@
     <Content Include="Views\Utente\Edit.cshtml" />
     <Content Include="Views\Utente\Delete.cshtml" />
     <Content Include="Views\Articolo\Menu.cshtml" />
+    <Content Include="Views\Carrello\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Carrello\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.rtl.min.css.map" />

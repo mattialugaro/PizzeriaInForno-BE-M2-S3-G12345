@@ -21,9 +21,9 @@
                     <li>@Html.ActionLink("Home", "Index", "Home", new { area = "" }, new { @class = "nav-link" })</li>
                     @if (User.IsInRole("Admin"))
                     {
-                        <li>@Html.ActionLink("Lista Utenti", "Index", "Utente", new { area = "" }, new { @class = "nav-link" })</li>
-                        <li>@Html.ActionLink("Lista Articoli", "Index", "Articolo", new { area = "" }, new { @class = "nav-link" })</li>
-                        <li>@Html.ActionLink("Lista Ordini", "Index", "Ordine", new { area = "" }, new { @class = "nav-link" })</li>
+                        <li>@Html.ActionLink("Utenti", "Index", "Utente", new { area = "" }, new { @class = "nav-link" })</li>
+                        <li>@Html.ActionLink("Articoli", "Index", "Articolo", new { area = "" }, new { @class = "nav-link" })</li>
+                        <li>@Html.ActionLink("Ordini", "Index", "Ordine", new { area = "" }, new { @class = "nav-link" })</li>
                     }
                     else
                     {

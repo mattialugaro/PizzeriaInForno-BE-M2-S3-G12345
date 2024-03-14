@@ -1,8 +1,6 @@
 ﻿using PizzeriaInForno.Models;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace PizzeriaInForno.Controllers
@@ -16,8 +14,22 @@ namespace PizzeriaInForno.Controllers
             var carrello = Session["carrello"] as List<OrdineArticolo>;
             if (carrello == null || !carrello.Any())
             {
-                return RedirectToAction("Index", "Articolo");
+                return RedirectToAction("Menu", "Articolo");
             }
+
+            foreach (var articolo in carrello)
+            {
+                var dettagli = db.Articolo.Where(a => a.IDArticolo == articolo.IDArticolo).First();
+                articolo.Articolo = dettagli;
+
+                var ingredienti = db.ArticoloIngredient.Where(a => a.IDArticolo == articolo.IDArticolo).ToList();
+                foreach (var ingrediente in ingredienti)
+                {
+                    var dettagliIngrediente = db.Ingredient.Where(i => i.IDIngredient == ingrediente.IDIngrediente).First();
+                    articolo.Articolo.Ingredient.Add(dettagliIngrediente);
+                }
+            }
+
             return View(carrello);
         }
 
@@ -29,6 +41,10 @@ namespace PizzeriaInForno.Controllers
                 var rimuoviProdotto = carrello.FirstOrDefault(a => a.IDArticolo == id);
                 if (rimuoviProdotto != null)
                 {
+                    if(rimuoviProdotto.Quantita > 1)
+                    {
+                        rimuoviProdotto.Quantita--;
+                    }
                     carrello.Remove(rimuoviProdotto);
                 }
             }
@@ -36,12 +52,37 @@ namespace PizzeriaInForno.Controllers
             return RedirectToAction("Index");
         }
 
+        public ActionResult AggiungiArticolo(int id) 
+        {
+            var carrello = Session["carrello"] as List<OrdineArticolo>;
+            if(carrello == null)
+            {
+                carrello = new List<OrdineArticolo>();
+                Session["carrello"] = carrello;
+            }
+
+            var aggiungiProdotto = carrello.FirstOrDefault(a => a.IDArticolo == id);
+            if (aggiungiProdotto != null)
+            {
+                aggiungiProdotto.Quantita++;
+            }
+            else
+            {
+                aggiungiProdotto = new OrdineArticolo();
+                aggiungiProdotto.IDArticolo = id;
+                aggiungiProdotto.Quantita = 1;
+                carrello.Add(aggiungiProdotto);
+            }
+
+            return RedirectToAction("Menu", "Articolo");
+        }
+
         public ActionResult Ordine(string indirizzo, string note)
         {
             ModelDbContext db = new ModelDbContext();
             var IDUtente = db.Utente.FirstOrDefault(u => u.Email == User.Identity.Name).IDUtente;
 
-            var carrello = Session["cart"] as List<OrdineArticolo>;
+            var carrello = Session["carrello"] as List<OrdineArticolo>;
             if (carrello != null && carrello.Any())
             {
                 Ordine o = new Ordine();
@@ -66,7 +107,7 @@ namespace PizzeriaInForno.Controllers
                 carrello.Clear();
             }
 
-            return RedirectToAction("Index", "Articolo");
+            return RedirectToAction("Menu", "Articolo");
         }
     }
 }

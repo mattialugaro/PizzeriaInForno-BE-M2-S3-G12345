@@ -24,7 +24,7 @@
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Foto)
+            <img src="@Url.Content("~/Content/img/" + Model.Foto)" alt="@Model.Nome" width="200px" height="200px" />
         </dd>
 
         <dt>
@@ -41,6 +41,22 @@
 
         <dd>
             @Html.DisplayFor(model => model.TempoConsegna)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Ingredient)
+        </dt>
+
+        <dd>
+            <div class="col-md-10">
+                <select id="ingredientiMultiSelect" name="IngredientiSelezionati" multiple="multiple">
+                    @foreach (var ingrediente in Model.Ingredient)
+                    {
+                        <option value="@ingrediente.IDIngredient">@ingrediente.Nome</option>
+                    }
+                </select>
+                @Html.ValidationMessageFor(model => Model.IngredientiSelezionati, "", new { @class = "text-danger" })
+            </div>
         </dd>
 
     </dl>

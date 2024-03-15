@@ -4,12 +4,13 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
-
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
+<div class="d-flex justify-content-between align-items-center my-4">
+    <h2 class="fst-italic">Lista Ordini</h2>
+    <p class="btn btn-danger border-1 border-dark">
+        <a class="text-decoration-none text-white fw-bold" href="/Ordine/Create">Crea Ordine</a>
+    </p>
+</div>
+<table class="table text-center">
     <tr>
         <th>
             @Html.DisplayNameFor(model => model.Utente.Nome)
@@ -23,29 +24,35 @@
         <th>
             @Html.DisplayNameFor(model => model.Evaso)
         </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DataOrdine)
+        </th>
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Utente.Nome)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.IndirizzoConsegna)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Note)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Evaso)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.IDOrdine }) |
-            @Html.ActionLink("Details", "Details", new { id=item.IDOrdine }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.IDOrdine })
-        </td>
-    </tr>
-}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Utente.Nome)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IndirizzoConsegna)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Note)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Evaso)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DataOrdine)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.IDOrdine }, new { @class = "btn btn-light text-danger fw-bold border-1 border-dark" }) |
+                @Html.ActionLink("Details", "Details", new { id = item.IDOrdine }, new { @class = "btn btn-danger text-white fw-bold border-1 border-dark" }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.IDOrdine }, new { @class = "btn btn-light text-danger fw-bold border-1 border-dark" })
+</tr>
+    }
 
 </table>

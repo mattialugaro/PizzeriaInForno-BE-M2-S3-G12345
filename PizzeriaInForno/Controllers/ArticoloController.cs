@@ -11,17 +11,20 @@ using PizzeriaInForno.Models;
 
 namespace PizzeriaInForno.Controllers
 {
+    [Authorize]
     public class ArticoloController : Controller
     {
         private ModelDbContext db = new ModelDbContext();
 
         // GET: Articolo
+        [Authorize(Roles = "admin")]
         public ActionResult Index()
         {                                    
             return View(getArticoliConIngredienti());
         }
 
         // GET: Articolo/Details/5
+        [Authorize(Roles = "admin")]
         public ActionResult Details(int? id)
         {
             if (id == null)
@@ -46,6 +49,7 @@ namespace PizzeriaInForno.Controllers
         }
 
         //GET: Articolo/Create
+        [Authorize(Roles = "admin")]
         public ActionResult Create()
         {                 
             Articolo articolo = new Articolo();            
@@ -53,33 +57,11 @@ namespace PizzeriaInForno.Controllers
             return View(articolo);
         }
 
-//var fileName = Path.GetFileName(ImmagineCopertina.FileName);
-//var path = Path.Combine("~/Content/Img", fileName);
-//var absolutePath = Server.MapPath(path);
-//ImmagineCopertina.SaveAs(absolutePath);
-
-//HttpPostedFileBase ImmagineCopertina come parametro
-
-//if (Foto != null && Foto.ContentLength > 0)
-//{
-//    string nomeFile = Path.GetFileName(Foto.FileName);
-//string pathToSave = Path.Combine(Server.MapPath("~/ImmaginiProdotto"), nomeFile);
-//Foto.SaveAs(pathToSave);
-//prodotto.Foto = "/ImmaginiProdotto/" + nomeFile; // Imposta l'URL dell'immagine
-//}
-//if (ModelState.IsValid)
-//{
-//    db.Prodotto.Add(prodotto);
-//    db.SaveChanges();
-//    return RedirectToAction("Index");
-//}
-//return View(prodotto);
-
-
         // POST: Articolo/Create
         // Per la protezione da attacchi di overposting, abilitare le proprietà a cui eseguire il binding. 
         // Per altri dettagli, vedere https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+        [Authorize(Roles = "admin")]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Nome,Foto,Prezzo,TempoConsegna,IngredientiSelezionati")] Articolo articolo)
         {
@@ -118,6 +100,7 @@ namespace PizzeriaInForno.Controllers
         }
 
         // GET: Articolo/Edit/5
+        [Authorize(Roles = "admin")]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -148,6 +131,7 @@ namespace PizzeriaInForno.Controllers
         // Per la protezione da attacchi di overposting, abilitare le proprietà a cui eseguire il binding. 
         // Per altri dettagli, vedere https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+        [Authorize(Roles = "admin")]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "IDArticolo,Nome,Foto,Prezzo,TempoConsegna,IngredientiSelezionati")] Articolo articolo)
         {
@@ -202,6 +186,7 @@ namespace PizzeriaInForno.Controllers
         }
 
         // GET: Articolo/Delete/5
+        [Authorize(Roles = "admin")]
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -226,6 +211,7 @@ namespace PizzeriaInForno.Controllers
 
         // POST: Articolo/Delete/5
         [HttpPost, ActionName("Delete")]
+        [Authorize(Roles = "admin")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {

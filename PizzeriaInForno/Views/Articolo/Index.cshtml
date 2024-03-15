@@ -4,12 +4,14 @@
   ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
+<div class="d-flex justify-content-between align-items-center my-4">
+    <h2 class="fst-italic">Lista Prodotti</h2>
+    <p class="btn btn-danger border-1 border-dark">
+        <a class="text-decoration-none text-white fw-bold" href="/Articolo/Create">Crea Prodotto</a>
+    </p>
+</div>
 
-<p>
-  @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
+<table class="table text-center table-hover border border-3 ">
   <tr>
     <th>
       @Html.DisplayNameFor(model => model.Foto)
@@ -32,16 +34,16 @@
   @foreach (var item in Model) {
     <tr>
       <td>
-        <img src="@Url.Content("~/Content/img/" + item.Foto)" alt="@item.Nome" width="200px" height="200px" />
+        <img src="@Url.Content("~/Content/img/" + item.Foto)" class="rounded-circle" alt="@item.Nome" width="220px" height="200px" />
       </td>
       <td>
         @Html.DisplayFor(modelItem => item.Nome)
       </td>
       <td>
-        @Html.DisplayFor(modelItem => item.Prezzo)
+        @Html.DisplayFor(modelItem => item.Prezzo) €
       </td>
       <td>
-        @Html.DisplayFor(modelItem => item.TempoConsegna)
+        @Html.DisplayFor(modelItem => item.TempoConsegna) Min.
       </td>
       <td>
           @foreach (var ingrediente in item.Ingredient)
@@ -50,9 +52,9 @@
           }
       </td>
       <td>
-        @Html.ActionLink("Edit", "Edit", new { id = item.IDArticolo }) |
-        @Html.ActionLink("Details", "Details", new { id = item.IDArticolo }) |
-        @Html.ActionLink("Delete", "Delete", new { id = item.IDArticolo })
+          <div>@Html.ActionLink("Edit", "Edit", new { id = item.IDArticolo }, new { @class = "btn btn-light text-danger fw-bold border-1 border-dark" })</div>
+          <div>@Html.ActionLink("Delete", "Delete", new { id = item.IDArticolo }, new { @class = "btn btn-danger text-white fw-bold border-1 border-dark" })</div>
+          <div>@Html.ActionLink("Details", "Details", new { id = item.IDArticolo }, new { @class = "btn btn-light text-danger fw-bold border-1 border-dark" })</div>
       </td>
     </tr>
   }

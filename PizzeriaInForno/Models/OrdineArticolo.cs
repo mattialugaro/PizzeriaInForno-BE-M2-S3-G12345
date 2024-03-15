@@ -26,6 +26,7 @@ namespace PizzeriaInForno.Models
 
         public virtual Articolo Articolo { get; set; }
 
-        public virtual Ordine Ordine { get; set; }
+        public virtual Ordine Ordine { get; set; }               
+
     }
 }

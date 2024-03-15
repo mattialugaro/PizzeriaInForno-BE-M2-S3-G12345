@@ -29,12 +29,14 @@ namespace PizzeriaInForno.Models
 
         public decimal Prezzo { get; set; }
 
+        [Display(Name = "Tempo di Preparazione")]
         public int TempoConsegna { get; set; }
 
        
         public virtual ICollection<OrdineArticolo> OrdineArticolo { get; set; }
 
         [NotMapped]
+        [Display(Name = "Ingredienti")]
         public virtual List<Ingredient> Ingredient { get; set; } = new List<Ingredient>();
 
         [NotMapped]

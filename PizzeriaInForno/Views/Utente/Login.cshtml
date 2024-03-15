@@ -4,45 +4,44 @@
     ViewBag.Title = "Login";
 }
 
-<h2>Login</h2>
-<p>Non sei ancora Registrato? <a class="text-decoration-none" href="~/Utente/Registrazione">Registrati</a></p>
+<h2 class=" mt-4 mb-2 fst-italic">Login</h2>
+<p class="fs-5">Non sei ancora Registrato? <a class="text-decoration-none" href="~/Utente/Registrazione">Registrati</a></p>
 
-@using (Html.BeginForm()) 
+@using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
-        <h4>Utente</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="form-group mb-3">
+            @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2 fw-bold" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
             </div>
         </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="form-group mb-4">
+            @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "control-label col-md-2 fw-bold" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.PasswordFor(model => model.Password, new { htmlAttributes = new { @class = "form-control w-100 rounded-2" } })
                 @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Login" class="btn btn-default" />
+                <input type="submit" value="Login" class="btn btn-danger border-1 border-dark text-white fw-bold" /> | 
+                <p class="btn btn-light border-1 border-dark mb-0">
+                    <a class="text-decoration-none text-danger fw-bold" href="/Utente/Index">Vai alla lista Utenti</a>
+                </p>
             </div>
         </div>
     </div>
 }
 
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")

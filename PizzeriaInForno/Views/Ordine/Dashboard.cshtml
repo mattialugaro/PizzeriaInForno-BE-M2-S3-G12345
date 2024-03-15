@@ -1,0 +1,47 @@
+﻿@model PizzeriaInForno.Models.Ordine
+
+
+
+
+@{
+    ViewBag.Title = "Dashboard";
+}
+
+<h2>Dashboard</h2>
+
+<button id="btnOrdiniEvasi" class="btn btn-light text-danger mb-2 fw-bold border border-2 border-dark">Ordini Evasi</button>
+<hr />
+
+<div id="risultati" class="mt-2"></div>
+
+
+@section Scripts {
+
+    <script src="~/Scripts/jquery-3.4.1.js"></script>
+
+
+    <script>
+  $(document).ready(function () {
+
+    $('#btnOrdiniEvasi').click(function () {
+      $.ajax({
+        url: '@Url.Action("OrdiniEvasi", "Ordine")', // Assuming you create the action method
+        type: 'GET',
+        dataType: 'json',
+        success: function (data) {
+          // Assuming data is an integer (total count)
+          var contenuto = '<h5>Totale ordini Evasi: ' + data + '</h5>';
+          $('#risultati').html(contenuto);
+        },
+        error: function (error) {
+          console.log(error);
+          // Optional: Display user-friendly error message (e.g., using an alert)
+          alert("An error occurred while fetching data. Please try again later.");
+        }
+      });
+    });
+
+  });
+    </script>
+
+} 

@@ -4,17 +4,16 @@
     ViewBag.Title = "Details";
 }
 
-<h2>Details</h2>
+<h2 class="mt-4 mb-2 fst-italic">Dettagli</h2>
 
 <div>
-    <h4>Articolo</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
             @Html.DisplayNameFor(model => model.Nome)
         </dt>
 
-        <dd>
+        <dd class="mb-3">
             @Html.DisplayFor(model => model.Nome)
         </dd>
 
@@ -22,15 +21,15 @@
             @Html.DisplayNameFor(model => model.Foto)
         </dt>
 
-        <dd>
-            <img src="@Url.Content("~/Content/img/" + Model.Foto)" alt="@Model.Nome" width="200px" height="200px" />
+        <dd class="mb-3">
+            <img class="rounded-circle" src="@Url.Content("~/Content/img/" + Model.Foto)" alt="@Model.Nome" width="200px" height="200px" />
         </dd>
 
         <dt>
             @Html.DisplayNameFor(model => model.Prezzo)
         </dt>
 
-        <dd>
+        <dd class="mb-3">
             @Html.DisplayFor(model => model.Prezzo)
         </dd>
 
@@ -38,7 +37,7 @@
             @Html.DisplayNameFor(model => model.TempoConsegna)
         </dt>
 
-        <dd>
+        <dd class="mb-3">
             @Html.DisplayFor(model => model.TempoConsegna)
         </dd>
 
@@ -46,19 +45,19 @@
             @Html.DisplayNameFor(model => model.Ingredient)
         </dt>
 
-        <div class="col-md-10">
-            <select id="ingredientiMultiSelect" name="IngredientiSelezionati" multiple="multiple">
-                @foreach (var ingrediente in Model.Ingredient)
-                {
-                    <option value="@ingrediente.IDIngredient">@ingrediente.Nome</option>
-                }
-            </select>
-            @Html.ValidationMessageFor(model => Model.IngredientiSelezionati, "", new { @class = "text-danger" })
-        </div>
+        <select id="ingredientiMultiSelect" name="IngredientiSelezionati" multiple="multiple" class="w-100 col-md-10">
+            @foreach (var ingrediente in Model.Ingredient)
+            {
+                <option value="@ingrediente.IDIngredient">@ingrediente.Nome</option>
+            }
+        </select>
+        @Html.ValidationMessageFor(model => Model.IngredientiSelezionati, "", new { @class = "text-danger" })
 
     </dl>
 </div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.IDArticolo }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>
+
+<div>
+    <p class="btn btn-light border-1 border-dark mb-0">
+        <a class="text-decoration-none text-danger fw-bold" href="/Articolo/Index">Vai alla lista Prodotti</a>
+    </p>
+</div>

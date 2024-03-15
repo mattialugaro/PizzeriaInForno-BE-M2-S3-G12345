@@ -18,3 +18,7 @@ select,
 textarea {
     max-width: 280px;
 }
+
+.fs-7 {
+    font-size: 14px;
+}

@@ -1,36 +1,65 @@
-﻿@model IEnumerable<PizzeriaInForno.Models.OrdineArticolo>
+﻿@model PizzeriaInForno.Models.Ordine
 
 @{
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
+<div class="d-flex justify-content-between align-items-center my-4">
+    <h2 class="fst-italic">Carrello</h2>
+    <a class="btn btn-danger border-1 border-dark text-decoration-none text-white fw-bold" href="@Url.Action("SvuotaCarrello")">
+        Svuota il Carrello
+    </a>
+
+</div>
 
 <div class="container">
     <div class="row">
-        @foreach (var articolo in Model)
+        @foreach (var articolo in Model.OrdineArticolo)
         {
             <div class="col-3">
-                <div class="card">
+                <div class="card mb-5">
                     <img src="~/Content/img/@articolo.Articolo.Foto" class="card-img-top" height="296px" alt="@articolo.Articolo.Nome">
                     <div class="card-body">
                         <h5 class="card-title">@articolo.Articolo.Nome</h5>
                         <p class="card-text">
                             @foreach (var ingrediente in articolo.Articolo.Ingredient)
                             {
-                                <span>@Html.Raw(@ingrediente.Nome)</span>
+                                <span class="fs-7">@Html.Raw(@ingrediente.Nome)</span>
                             }
+                            <div class="d-flex justify-content-between">
+                                <p class="card-text">@articolo.Articolo.TempoConsegna Min.</p>
+                                <p class="card-text">@articolo.Articolo.Prezzo €</p>
+                            </div>
+                        <p class="text-center"><strong>Quantità: </strong> @articolo.Quantita</p>
                         </p>
-                        <div class="d-flex justify-content-between">
-                            <p class="card-text">@articolo.Articolo.TempoConsegna Min.</p>
-                            <p class="card-text">@articolo.Articolo.Prezzo €</p>
+                        <div class="text-center">
+                            <a class="btn btn-danger border-1 border-dark text-decoration-none text-white fw-bold" href="@Url.Action("Delete", "Carrello", new { id = articolo.IDArticolo })" class="btn btn-danger">
+                                Rimuovi dal Carrello
+                            </a>
                         </div>
-                        <p>@articolo.Quantita</p>
-                        @Html.ActionLink("Rimuovi al Carrello", "Delete", "Carrello", new { id = articolo.IDArticolo }, null)
                     </div>
                 </div>
             </div>
-
         }
     </div>
+
+    @using (Html.BeginForm("Confirm", "Carrello", FormMethod.Post))
+    {       
+        @Html.AntiForgeryToken()
+
+        <div class="my-3 d-flex flex-column">
+            <strong>Indirizzo di Consegna:</strong>
+            @Html.EditorFor(model => model.IndirizzoConsegna, new { htmlAttributes = new { @class = "form-control mb-3" } })
+            <strong>Note da Aggiungere:</strong>
+            @Html.EditorFor(model => model.Note, new { htmlAttributes = new { @class = "form-control" } })
+        </div>
+        <div class="mb-3">
+            <p><strong>Totale Ordine: </strong>@Model.TotaleCarrello €</p>
+        </div>
+
+        <div>
+            <button class="btn btn-light text-danger fw-bold border-2 border-dark" type="submit">Invia Ordine</button>            
+        </div>
+    }
+
 </div>

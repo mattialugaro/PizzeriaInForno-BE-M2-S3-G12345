@@ -1,15 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
 using System.Data.Entity;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using PizzeriaInForno.Models;
 
+
 namespace PizzeriaInForno.Controllers
 {
+    [Authorize(Roles = "admin")]
     public class OrdineController : Controller
     {
         private ModelDbContext db = new ModelDbContext();
@@ -52,6 +57,7 @@ namespace PizzeriaInForno.Controllers
         {
             if (ModelState.IsValid)
             {
+                ordine.DataOrdine = DateTime.Now;
                 db.Ordine.Add(ordine);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -127,6 +133,38 @@ namespace PizzeriaInForno.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
+        }
+
+        public ActionResult Dashboard()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        public ActionResult OrdiniEvasi() //Errore nel funzionamento, problema con la conversione del dato
+        {
+            List<Ordine> ordine;
+            string connectionstring = ConfigurationManager.ConnectionStrings["MyDB"].ConnectionString.ToString();
+
+            using (SqlConnection conn = new SqlConnection(connectionstring))
+            {
+                string sql = @"SELECT COUNT(Evaso) AS OrdiniEvasi FROM Ordine WHERE Evaso = 1";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                cmd.Parameters.AddWithValue("@Evaso", "1");
+
+                conn.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+                ordine = new List<Ordine>();
+                while (reader.Read())
+                {
+                    //int ordiniEvasiCount = Convert.ToInt16(reader["OrdiniEvasi"]);
+                    //Ordine o = new Ordine { Evaso = ordiniEvasiCount };
+                    //ordine.Add(o);
+                }
+            }
+
+            return Json(ordine, JsonRequestBehavior.AllowGet);
         }
     }
 }

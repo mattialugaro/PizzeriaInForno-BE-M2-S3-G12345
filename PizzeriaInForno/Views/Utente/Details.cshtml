@@ -4,17 +4,16 @@
     ViewBag.Title = "Details";
 }
 
-<h2>Details</h2>
+<h2 class="mt-4 mb-2 fst-italic">Dettagli</h2>
 
 <div>
-    <h4>Utente</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
             @Html.DisplayNameFor(model => model.Nome)
         </dt>
 
-        <dd>
+        <dd class="mb-3">
             @Html.DisplayFor(model => model.Nome)
         </dd>
 
@@ -22,7 +21,7 @@
             @Html.DisplayNameFor(model => model.Cognome)
         </dt>
 
-        <dd>
+        <dd class="mb-3">
             @Html.DisplayFor(model => model.Cognome)
         </dd>
 
@@ -30,7 +29,7 @@
             @Html.DisplayNameFor(model => model.Email)
         </dt>
 
-        <dd>
+        <dd class="mb-3">
             @Html.DisplayFor(model => model.Email)
         </dd>
 
@@ -38,7 +37,7 @@
             @Html.DisplayNameFor(model => model.Password)
         </dt>
 
-        <dd>
+        <dd class="mb-3">
             @Html.DisplayFor(model => model.Password)
         </dd>
 
@@ -46,13 +45,15 @@
             @Html.DisplayNameFor(model => model.Ruolo)
         </dt>
 
-        <dd>
+        <dd class="mb-3">
             @Html.DisplayFor(model => model.Ruolo)
         </dd>
 
     </dl>
 </div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.IDUtente }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>
+
+<div>
+    <p class="btn btn-light border-1 border-dark mb-0">
+        <a class="text-decoration-none text-danger fw-bold" href="/Utente/Index">Vai alla lista Utenti</a>
+    </p>
+</div>

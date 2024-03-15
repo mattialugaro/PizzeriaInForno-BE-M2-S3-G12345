@@ -12,6 +12,7 @@ using System.Web.Security;
 
 namespace PizzeriaInForno.Controllers
 {
+    [Authorize(Roles = "admin")]
     public class UtenteController : Controller
     {
         private ModelDbContext db = new ModelDbContext();
@@ -126,12 +127,14 @@ namespace PizzeriaInForno.Controllers
             base.Dispose(disposing);
         }
 
+        [AllowAnonymous]
         public ActionResult Login()
         {
             return View();
         }
 
         [HttpPost]
+        [AllowAnonymous]
         public ActionResult Login(Utente u)
         {
             string connectionstring = ConfigurationManager.ConnectionStrings["MyDB"].ConnectionString.ToString();
@@ -171,12 +174,14 @@ namespace PizzeriaInForno.Controllers
             return View();
         }
 
+        [AllowAnonymous]
         public ActionResult Registrazione()
         {
             return View();
         }
 
         [HttpPost]
+        [AllowAnonymous]
         public ActionResult Registrazione(Utente u)
         {
 
@@ -211,6 +216,7 @@ namespace PizzeriaInForno.Controllers
             return RedirectToAction("Login");
         }
 
+        [AllowAnonymous]
         public ActionResult Logout()
         {
             FormsAuthentication.SignOut();
